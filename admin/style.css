@@ -31,7 +31,7 @@ body {
     margin: 0;
     font-family: var(--font-body);
     color: var(--color-body);
-    background: var(--color-image-panel-bg);
+    background: #FFFFFF;
 }
 
 h1, h2, h3 {
@@ -113,6 +113,7 @@ button:hover,
     justify-content: center;
     min-height: 100vh;
     padding: 24px;
+    background: var(--color-image-panel-bg);
 }
 
 .login-card {
@@ -199,4 +200,162 @@ button:hover,
     .login-panel-form {
         padding: 32px 24px;
     }
+}
+
+/* ==========================================================================
+   Adminsidorna (bokningar, lokaler, historik) - vit bakgrund, delad
+   navigering överst.
+   ========================================================================== */
+
+.admin-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+}
+
+.admin-page h1 {
+    font-size: 24px;
+    margin: 32px 0 20px;
+}
+
+/* Rundad "pill"-navigering, delad av index.php/rooms.php/historik.php via
+   admin/nav.php. */
+.admin-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: #FFFFFF;
+    border: 1px solid var(--color-border-card);
+    border-radius: 999px;
+    padding: 10px 10px 10px 24px;
+}
+
+.admin-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.admin-nav-link {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-body);
+    text-decoration: none;
+}
+
+.admin-nav-link:hover {
+    color: var(--color-heading);
+}
+
+.admin-nav-link.active {
+    font-weight: 500;
+    color: var(--color-heading);
+}
+
+.admin-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.admin-nav-user {
+    font-size: 13px;
+    color: var(--color-help);
+}
+
+.admin-nav-user a {
+    color: var(--color-help);
+}
+
+.admin-nav-new {
+    font-size: 14px;
+    padding: 10px 20px;
+}
+
+/* Bokningstabellen (index.php): tunna linjer mellan rader, ingen ram runt
+   hela tabellytan. */
+.booking-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.booking-list th,
+.booking-list td {
+    text-align: left;
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--color-border-card);
+    font-size: 14px;
+}
+
+.booking-list th {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-help);
+}
+
+.booking-list .text-right {
+    text-align: right;
+}
+
+.company-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-heading);
+}
+
+.company-thumb {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.company-thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-image-panel-bg);
+    color: var(--color-help);
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Ikonknapparna (redigera/ta bort) i tabellens sista kolumn - egen, mindre
+   stil så de inte får den stora mörka pill-knappstilen från button/.btn-primary. */
+.row-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.row-actions a,
+.row-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    color: var(--color-help);
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.row-actions a:hover,
+.row-actions button:hover {
+    background: var(--color-image-panel-bg);
+    color: var(--color-heading);
+    opacity: 1;
 }

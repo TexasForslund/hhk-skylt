@@ -15,22 +15,27 @@ $stmt->execute([$now]);
 $bookings = $stmt->fetchAll();
 
 $return = 'historik';
+$currentPage = 'historik';
 ?>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Historik - hhk-skylt admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.46.0/tabler-icons.min.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Historik</h1>
-<p>
-    Inloggad som <?= htmlspecialchars($_SESSION['admin_username'] ?? '') ?>.
-    <a href="logout.php">Logga ut</a>
-</p>
+<div class="admin-page">
+    <?php require __DIR__ . '/nav.php'; ?>
 
-<p><a href="index.php">Tillbaka till aktuella bokningar</a></p>
+    <h1>Historik</h1>
 
-<?php require __DIR__ . '/booking_table.php'; ?>
+    <?php require __DIR__ . '/booking_table.php'; ?>
+</div>
 </body>
 </html>

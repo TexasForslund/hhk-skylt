@@ -55,17 +55,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_room'])) {
 }
 
 $rooms = $pdo->query('SELECT id, name FROM rooms ORDER BY name')->fetchAll();
+$currentPage = 'rooms';
 ?>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lokaler - hhk-skylt admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.46.0/tabler-icons.min.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Lokaler</h1>
+<div class="admin-page">
+    <?php require __DIR__ . '/nav.php'; ?>
 
-<?php render_errors($errors); ?>
+    <h1>Lokaler</h1>
+
+    <?php render_errors($errors); ?>
 
 <table border="1" cellpadding="4">
 <tr>
@@ -106,10 +116,9 @@ $rooms = $pdo->query('SELECT id, name FROM rooms ORDER BY name')->fetchAll();
     <p><button type="submit"><?= $editId ? 'Spara ändringar' : 'Lägg till' ?></button></p>
 </form>
 
-<?php if ($editId): ?>
-<p><a href="rooms.php">Avbryt redigering</a></p>
-<?php endif; ?>
-
-<p><a href="index.php">Tillbaka till bokningar</a></p>
+    <?php if ($editId): ?>
+    <p><a href="rooms.php">Avbryt redigering</a></p>
+    <?php endif; ?>
+</div>
 </body>
 </html>
