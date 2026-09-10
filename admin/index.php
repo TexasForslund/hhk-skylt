@@ -54,7 +54,7 @@ $currentPage = 'bookings';
                 <?php else: ?>
                 <span class="company-thumb company-thumb-placeholder"><?= htmlspecialchars(companyInitials($booking['company_name'])) ?></span>
                 <?php endif; ?>
-                <span><?= htmlspecialchars($booking['company_name']) ?></span>
+                <span class="company-name"><?= htmlspecialchars($booking['company_name']) ?></span>
             </div>
         </td>
         <td><?= $booking['room_name'] ? htmlspecialchars($booking['room_name']) : '(ingen lokal)' ?></td>

@@ -4,6 +4,14 @@
    (index.php, rooms.php, booking_form.php, historik.php, ...).
    Google Fonts (Inter/Open Sans) laddas via <link>-taggar i varje sidas
    <head> - den här filen bara sätter font-family utifrån dem.
+
+   Letter-spacing: font-size < 18px -> -0.2px, font-size >= 18px -> -0.5px,
+   satt konsekvent på varje regel utifrån dess egen font-size. Undantag:
+   .login-eyebrow behåller sin egen positiva letter-spacing (se den regeln).
+
+   Textstorlekar under 16px har höjts till 16px som standard, med en
+   @media (max-width: 650px)-regel längst ned som sänker exakt dessa till
+   14px för mobilvyn.
    ========================================================================== */
 
 :root {
@@ -30,6 +38,8 @@
 body {
     margin: 0;
     font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-body);
     background: #FFFFFF;
 }
@@ -37,17 +47,20 @@ body {
 h1, h2, h3 {
     font-family: var(--font-heading);
     color: var(--color-heading);
+    letter-spacing: -0.5px;
     margin: 0 0 8px;
 }
 
 p {
     line-height: 1.5;
+    letter-spacing: -0.2px;
 }
 
 label {
     font-family: var(--font-body);
     font-weight: 500;
     color: var(--color-heading);
+    letter-spacing: -0.2px;
     display: block;
     margin-bottom: 6px;
 }
@@ -58,7 +71,8 @@ input[type="datetime-local"],
 input[type="file"],
 select {
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-heading);
     background: #FFFFFF;
     border: 1px solid var(--color-input-border);
@@ -77,7 +91,8 @@ button,
 .btn-primary {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     background: var(--color-button-bg);
     color: var(--color-button-text);
     border: none;
@@ -94,12 +109,14 @@ button:hover,
 .errors {
     color: #B3261E;
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     padding-left: 20px;
 }
 
 .help-text {
-    font-size: 13px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-help);
 }
 
@@ -140,8 +157,11 @@ button:hover,
 
 .login-eyebrow {
     font-family: var(--font-heading);
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 600;
+    /* Medvetet undantag från det generella -0.2px/-0.5px-systemet: gles,
+       positiv spårning ger den versala "eyebrow"-etiketten sin small-caps-
+       känsla. Byt inte till den negativa standardspårningen här. */
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-help);
@@ -160,7 +180,8 @@ button:hover,
 
 .login-subtitle {
     margin: 0;
-    font-size: 15px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-body);
 }
 
@@ -176,7 +197,8 @@ button:hover,
 }
 
 .login-help {
-    font-size: 13px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-help);
     margin: 0;
 }
@@ -208,6 +230,10 @@ button:hover,
    ========================================================================== */
 
 .admin-page {
+    /* Adminpanelen är ett internt verktyg och ska inte krympa under 850px -
+       gäller inte inloggningssidan (.login-page ovan), som förblir fullt
+       mobilanpassad. Smalare skärmar får horisontell scroll. */
+    min-width: 850px;
     max-width: 1100px;
     margin: 0 auto;
     padding: 32px 24px 64px;
@@ -241,7 +267,8 @@ button:hover,
 
 .admin-nav-link {
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-body);
     text-decoration: none;
 }
@@ -263,7 +290,8 @@ button:hover,
 }
 
 .admin-nav-user {
-    font-size: 13px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     color: var(--color-help);
 }
 
@@ -272,7 +300,8 @@ button:hover,
 }
 
 .admin-nav-new {
-    font-size: 14px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     padding: 10px 20px;
 }
 
@@ -288,12 +317,12 @@ button:hover,
     text-align: left;
     padding: 14px 12px;
     border-bottom: 1px solid var(--color-border-card);
-    font-size: 14px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
 }
 
 .booking-list th {
     font-family: var(--font-body);
-    font-size: 13px;
     font-weight: 400;
     color: var(--color-help);
 }
@@ -307,6 +336,10 @@ button:hover,
     align-items: center;
     gap: 12px;
     color: var(--color-heading);
+}
+
+.company-name {
+    font-weight: 500;
 }
 
 .company-thumb {
@@ -324,7 +357,8 @@ button:hover,
     background: var(--color-image-panel-bg);
     color: var(--color-help);
     font-family: var(--font-heading);
-    font-size: 11px;
+    font-size: 16px;
+    letter-spacing: -0.2px;
     font-weight: 600;
 }
 
@@ -349,6 +383,7 @@ button:hover,
     border: none;
     border-radius: 6px;
     font-size: 16px;
+    letter-spacing: -0.2px;
     text-decoration: none;
     cursor: pointer;
 }
@@ -358,4 +393,32 @@ button:hover,
     background: var(--color-image-panel-bg);
     color: var(--color-heading);
     opacity: 1;
+}
+
+/* ==========================================================================
+   Mobil: sänk exakt de textstorlekar som höjdes till 16px ovan (inte
+   rubriker eller andra element som redan var 16px+) till 14px under 650px.
+   ========================================================================== */
+
+@media (max-width: 650px) {
+    input[type="text"],
+    input[type="password"],
+    input[type="datetime-local"],
+    input[type="file"],
+    select,
+    button,
+    .btn-primary,
+    .errors,
+    .help-text,
+    .login-eyebrow,
+    .login-subtitle,
+    .login-help,
+    .admin-nav-link,
+    .admin-nav-user,
+    .admin-nav-new,
+    .booking-list th,
+    .booking-list td,
+    .company-thumb-placeholder {
+        font-size: 14px;
+    }
 }
