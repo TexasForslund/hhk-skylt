@@ -118,7 +118,7 @@ button:hover,
 .login-card {
     display: flex;
     width: 100%;
-    max-width: 640px;
+    max-width: 1200px;
     background: var(--color-bg-card);
     border: 1px solid var(--color-border-card);
     border-radius: 16px;
