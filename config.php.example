@@ -1,0 +1,8 @@
+<?php
+// Kopiera denna fil till config.php på servern och fyll i riktiga uppgifter.
+// config.php ska ALDRIG committas till Git.
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'skylt');
+define('DB_USER', 'sqluser');
+define('DB_PASS', '');
