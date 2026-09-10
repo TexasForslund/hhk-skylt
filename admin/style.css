@@ -42,7 +42,7 @@ body {
     margin: 0;
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-body);
     background: #FFFFFF;
 }
@@ -56,14 +56,14 @@ h1, h2, h3 {
 
 p {
     line-height: 1.5;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
 }
 
 label {
     font-family: var(--font-body);
     font-weight: 500;
     color: var(--color-heading);
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     display: block;
     margin-bottom: 6px;
 }
@@ -75,7 +75,7 @@ input[type="file"],
 select {
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-heading);
     background: #FFFFFF;
     border: 1px solid var(--color-input-border);
@@ -95,7 +95,7 @@ button,
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     background: var(--color-button-bg);
     color: var(--color-button-text);
     border: none;
@@ -113,13 +113,13 @@ button:hover,
     color: #B3261E;
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     padding-left: 20px;
 }
 
 .help-text {
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-help);
 }
 
@@ -184,7 +184,7 @@ button:hover,
 .login-subtitle {
     margin: 0;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-body);
 }
 
@@ -201,7 +201,7 @@ button:hover,
 
 .login-help {
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-help);
     margin: 0;
 }
@@ -270,7 +270,7 @@ button:hover,
 .admin-nav-link {
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-body);
     text-decoration: none;
 }
@@ -293,7 +293,7 @@ button:hover,
 
 .admin-nav-user {
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-help);
 }
 
@@ -303,7 +303,7 @@ button:hover,
 
 .admin-nav-new {
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     padding: 10px 20px;
 }
 
@@ -320,7 +320,7 @@ button:hover,
     padding: 14px 12px;
     border-bottom: 1px solid var(--color-border-card);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
 }
 
 .booking-list th {
@@ -360,7 +360,7 @@ button:hover,
     color: var(--color-help);
     font-family: var(--font-heading);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     font-weight: 600;
 }
 
@@ -385,7 +385,7 @@ button:hover,
     border: none;
     border-radius: 6px;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     text-decoration: none;
     cursor: pointer;
 }
@@ -453,7 +453,7 @@ button:hover,
     font-family: var(--font-heading);
     font-weight: 500;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     white-space: nowrap;
     cursor: pointer;
 }
@@ -483,7 +483,7 @@ button:hover,
     padding: 8px 10px;
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-heading);
     cursor: pointer;
 }
@@ -498,7 +498,7 @@ button:hover,
 
 .field-hint {
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-help);
     margin: 0;
 }
@@ -527,7 +527,7 @@ button:hover,
     padding: 10px 18px;
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     cursor: pointer;
 }
 
@@ -545,14 +545,14 @@ button:hover,
 
 .datetime-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr;
     gap: 16px;
 }
 
 .datetime-box {
     border: 1px solid var(--color-border-card);
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
 }
 
 .calendar-header {
@@ -566,7 +566,7 @@ button:hover,
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-heading);
 }
 
@@ -582,7 +582,7 @@ button:hover,
     color: var(--color-body);
     font-family: var(--font-body);
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     text-decoration: underline;
     cursor: pointer;
     padding: 4px 6px;
@@ -619,7 +619,7 @@ button:hover,
 .cal-weekday {
     text-align: center;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     color: var(--color-help);
 }
 
@@ -627,13 +627,15 @@ button:hover,
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 1;
+    width: 34px;
+    height: 34px;
+    margin: 0 auto;
     background: none;
     border: none;
     border-radius: 6px;
     font-family: var(--font-body);
-    font-size: 16px;
-    letter-spacing: -0.2px;
+    font-size: 14px;
+    letter-spacing: -0.5px;
     color: var(--color-heading);
     cursor: pointer;
 }
@@ -675,18 +677,23 @@ button:hover,
     flex-direction: column;
     gap: 6px;
     max-height: 260px;
+    overflow-x: hidden;
     overflow-y: auto;
 }
 
 .time-option {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     text-align: left;
+    white-space: nowrap;
     background: var(--color-bg-card);
     border: 1px solid var(--color-border-card);
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     font-family: var(--font-body);
-    font-size: 16px;
-    letter-spacing: -0.2px;
+    font-size: 14px;
+    letter-spacing: -0.5px;
     color: var(--color-heading);
     cursor: pointer;
 }
@@ -701,14 +708,16 @@ button:hover,
     justify-content: space-between;
     gap: 8px;
     width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
     background: var(--color-selected-bg);
     color: var(--color-selected-text);
     border: none;
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     font-family: var(--font-body);
-    font-size: 16px;
-    letter-spacing: -0.2px;
+    font-size: 14px;
+    letter-spacing: -0.5px;
     cursor: pointer;
 }
 
@@ -763,7 +772,7 @@ button:hover,
     font-family: var(--font-heading);
     font-weight: 600;
     font-size: 16px;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.5px;
     text-decoration: none;
     cursor: pointer;
 }
@@ -803,9 +812,6 @@ button:hover,
     .calendar-title,
     .link-btn,
     .cal-weekday,
-    .cal-day,
-    .time-option,
-    .time-chip,
     .btn-secondary {
         font-size: 14px;
     }
