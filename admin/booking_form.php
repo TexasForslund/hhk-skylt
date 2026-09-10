@@ -52,10 +52,13 @@ if ($id) {
     }
 }
 
+$rooms = $pdo->query('SELECT id, name FROM rooms ORDER BY name')->fetchAll();
+$roomIds = array_column($rooms, 'id');
+
 $errors = [];
 $values = [
     'company_name' => $booking['company_name'] ?? '',
-    'room' => $booking['room'] ?? '',
+    'room_id' => $booking['room_id'] ?? '',
     'start_time' => toDatetimeLocal($booking['start_time'] ?? null),
     'end_time' => toDatetimeLocal($booking['end_time'] ?? null),
 ];
@@ -63,15 +66,15 @@ $currentLogo = $booking['company_logo'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values['company_name'] = trim($_POST['company_name'] ?? '');
-    $values['room'] = trim($_POST['room'] ?? '');
+    $values['room_id'] = trim($_POST['room_id'] ?? '');
     $values['start_time'] = trim($_POST['start_time'] ?? '');
     $values['end_time'] = trim($_POST['end_time'] ?? '');
 
     if ($values['company_name'] === '') {
         $errors[] = 'Företagsnamn krävs.';
     }
-    if ($values['room'] === '') {
-        $errors[] = 'Lokal krävs.';
+    if ($values['room_id'] === '' || !in_array((int) $values['room_id'], $roomIds, true)) {
+        $errors[] = 'Välj en giltig lokal.';
     }
     if ($values['start_time'] === '' || $values['end_time'] === '') {
         $errors[] = 'Start- och sluttid krävs.';
@@ -118,11 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $endTime = toMysqlDatetime($values['end_time']);
 
         if ($id) {
-            $stmt = $pdo->prepare('UPDATE bookings SET company_name = ?, company_logo = ?, room = ?, start_time = ?, end_time = ? WHERE id = ?');
-            $stmt->execute([$values['company_name'], $companyLogo, $values['room'], $startTime, $endTime, $id]);
+            $stmt = $pdo->prepare('UPDATE bookings SET company_name = ?, company_logo = ?, room_id = ?, start_time = ?, end_time = ? WHERE id = ?');
+            $stmt->execute([$values['company_name'], $companyLogo, (int) $values['room_id'], $startTime, $endTime, $id]);
         } else {
-            $stmt = $pdo->prepare('INSERT INTO bookings (company_name, company_logo, room, start_time, end_time) VALUES (?, ?, ?, ?, ?)');
-            $stmt->execute([$values['company_name'], $companyLogo, $values['room'], $startTime, $endTime]);
+            $stmt = $pdo->prepare('INSERT INTO bookings (company_name, company_logo, room_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)');
+            $stmt->execute([$values['company_name'], $companyLogo, (int) $values['room_id'], $startTime, $endTime]);
         }
 
         if ($oldLogoToDelete) {
@@ -160,7 +163,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <p>
         <label>Lokal:<br>
-        <input type="text" name="room" value="<?= htmlspecialchars($values['room']) ?>" required></label>
+        <select name="room_id" required>
+            <option value="">Välj lokal</option>
+            <?php foreach ($rooms as $room): ?>
+            <option value="<?= (int) $room['id'] ?>" <?= (string) $room['id'] === (string) $values['room_id'] ? 'selected' : '' ?>><?= htmlspecialchars($room['name']) ?></option>
+            <?php endforeach; ?>
+        </select></label>
     </p>
 
     <p>

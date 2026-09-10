@@ -2,7 +2,12 @@
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../db.php';
 
-$stmt = $pdo->query('SELECT id, company_name, company_logo, room, start_time, end_time FROM bookings ORDER BY start_time DESC');
+$stmt = $pdo->query('
+    SELECT b.id, b.company_name, b.company_logo, r.name AS room_name, b.start_time, b.end_time
+    FROM bookings b
+    LEFT JOIN rooms r ON r.id = b.room_id
+    ORDER BY b.start_time DESC
+');
 $bookings = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
@@ -18,7 +23,11 @@ $bookings = $stmt->fetchAll();
     <a href="logout.php">Logga ut</a>
 </p>
 
-<p><a href="booking_form.php">Lägg till ny bokning</a></p>
+<p>
+    <a href="booking_form.php">Lägg till ny bokning</a>
+    &nbsp;|&nbsp;
+    <a href="rooms.php">Hantera lokaler</a>
+</p>
 
 <table border="1" cellpadding="4">
 <tr>
@@ -33,7 +42,7 @@ $bookings = $stmt->fetchAll();
 <tr>
     <td><?= htmlspecialchars($booking['company_name']) ?></td>
     <td><?= $booking['company_logo'] ? htmlspecialchars($booking['company_logo']) : '-' ?></td>
-    <td><?= htmlspecialchars($booking['room']) ?></td>
+    <td><?= $booking['room_name'] ? htmlspecialchars($booking['room_name']) : '(ingen lokal)' ?></td>
     <td><?= htmlspecialchars($booking['start_time']) ?></td>
     <td><?= htmlspecialchars($booking['end_time']) ?></td>
     <td>

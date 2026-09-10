@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/../db.php';
 
-$roomNames = $pdo->query('SELECT DISTINCT room FROM bookings ORDER BY room')->fetchAll(PDO::FETCH_COLUMN);
+$allRooms = $pdo->query('SELECT id, name FROM rooms ORDER BY name')->fetchAll();
 
 $activeStmt = $pdo->prepare('
     SELECT company_name, company_logo
     FROM bookings
-    WHERE room = ? AND ? BETWEEN start_time AND end_time
+    WHERE room_id = ? AND ? BETWEEN start_time AND end_time
     ORDER BY start_time
     LIMIT 1
 ');
@@ -14,11 +14,11 @@ $activeStmt = $pdo->prepare('
 $now = date('Y-m-d H:i:s');
 
 $rooms = [];
-foreach ($roomNames as $roomName) {
-    $activeStmt->execute([$roomName, $now]);
+foreach ($allRooms as $roomRow) {
+    $activeStmt->execute([$roomRow['id'], $now]);
     $active = $activeStmt->fetch();
     $rooms[] = [
-        'room' => $roomName,
+        'room' => $roomRow['name'],
         'company_name' => $active['company_name'] ?? null,
         'company_logo' => $active['company_logo'] ?? null,
     ];
