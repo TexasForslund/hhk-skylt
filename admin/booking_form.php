@@ -73,13 +73,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($values['company_name'] === '') {
         $errors[] = 'Företagsnamn krävs.';
     }
-    if ($values['room_id'] === '' || !in_array((int) $values['room_id'], $roomIds, true)) {
+
+    $roomIdValid = $values['room_id'] !== '' && in_array((int) $values['room_id'], $roomIds, true);
+    if (!$roomIdValid) {
         $errors[] = 'Välj en giltig lokal.';
     }
+
+    $timesValid = false;
     if ($values['start_time'] === '' || $values['end_time'] === '') {
         $errors[] = 'Start- och sluttid krävs.';
     } elseif ($values['end_time'] <= $values['start_time']) {
         $errors[] = 'Sluttid måste vara efter starttid.';
+    } else {
+        $timesValid = true;
+    }
+
+    $startTime = null;
+    $endTime = null;
+
+    if ($roomIdValid && $timesValid) {
+        $startTime = toMysqlDatetime($values['start_time']);
+        $endTime = toMysqlDatetime($values['end_time']);
+
+        $overlapStmt = $pdo->prepare('
+            SELECT company_name, start_time, end_time
+            FROM bookings
+            WHERE room_id = ?
+                AND start_time < ?
+                AND end_time > ?
+                AND id != ?
+            LIMIT 1
+        ');
+        $overlapStmt->execute([(int) $values['room_id'], $endTime, $startTime, $id ?? 0]);
+        $overlap = $overlapStmt->fetch();
+
+        if ($overlap) {
+            $errors[] = sprintf(
+                'Lokalen är redan bokad av %s (%s - %s) under den valda tiden.',
+                $overlap['company_name'],
+                $overlap['start_time'],
+                $overlap['end_time']
+            );
+        }
     }
 
     $companyLogo = $currentLogo;
@@ -117,9 +152,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!$errors) {
-        $startTime = toMysqlDatetime($values['start_time']);
-        $endTime = toMysqlDatetime($values['end_time']);
-
         if ($id) {
             $stmt = $pdo->prepare('UPDATE bookings SET company_name = ?, company_logo = ?, room_id = ?, start_time = ?, end_time = ? WHERE id = ?');
             $stmt->execute([$values['company_name'], $companyLogo, (int) $values['room_id'], $startTime, $endTime, $id]);
