@@ -55,6 +55,17 @@ if ($id) {
 $rooms = $pdo->query('SELECT id, name FROM rooms ORDER BY name')->fetchAll();
 $roomIds = array_column($rooms, 'id');
 
+// En rad per unikt företagsnamn, med loggan från dess senaste bokning, så
+// receptionen kan återanvända tidigare inmatade uppgifter istället för att
+// skriva in samma företag och ladda upp samma logga på nytt varje gång.
+$previousCompanies = $pdo->query('
+    SELECT company_name, company_logo
+    FROM bookings b1
+    WHERE id = (SELECT MAX(id) FROM bookings b2 WHERE b2.company_name = b1.company_name)
+    ORDER BY company_name
+')->fetchAll();
+$validPreviousLogos = array_filter(array_column($previousCompanies, 'company_logo'));
+
 $errors = [];
 $values = [
     'company_name' => $booking['company_name'] ?? '',
@@ -125,7 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $companyLogo = null;
     }
 
-    if (!empty($_FILES['company_logo']['name'])) {
+    $newFileUploaded = !empty($_FILES['company_logo']['name']);
+
+    if ($newFileUploaded) {
         $file = $_FILES['company_logo'];
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
@@ -149,6 +162,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
+    } else {
+        // Ingen ny fil uppladdad - om receptionen valde ett tidigare
+        // företag med en logga, återanvänd samma fil istället för att
+        // kräva en ny uppladdning.
+        $reusedLogo = trim($_POST['reused_logo'] ?? '');
+
+        if ($reusedLogo !== '' && !$oldLogoToDelete && in_array($reusedLogo, $validPreviousLogos, true)) {
+            if ($currentLogo && $currentLogo !== $reusedLogo) {
+                $oldLogoToDelete = $currentLogo;
+            }
+            $companyLogo = $reusedLogo;
+        }
     }
 
     if (!$errors) {
@@ -160,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$values['company_name'], $companyLogo, (int) $values['room_id'], $startTime, $endTime]);
         }
 
-        if ($oldLogoToDelete) {
+        if ($oldLogoToDelete && !logoInUseElsewhere($pdo, $oldLogoToDelete, $id)) {
             $oldPath = UPLOAD_DIR . $oldLogoToDelete;
             if (is_file($oldPath)) {
                 unlink($oldPath);
@@ -188,9 +213,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="hidden" name="id" value="<?= (int) $id ?>">
     <?php endif; ?>
 
+    <?php if ($previousCompanies): ?>
+    <p>
+        <label>Återanvänd tidigare företag:<br>
+        <select id="company_picker">
+            <option value="">-- Skriv in nytt/eget företag --</option>
+            <?php foreach ($previousCompanies as $previousCompany): ?>
+            <option value="<?= htmlspecialchars($previousCompany['company_name']) ?>" data-logo="<?= htmlspecialchars($previousCompany['company_logo'] ?? '') ?>">
+                <?= htmlspecialchars($previousCompany['company_name']) ?><?= $previousCompany['company_logo'] ? '' : ' (ingen logga sparad)' ?>
+            </option>
+            <?php endforeach; ?>
+        </select></label>
+        <br>
+        <span id="reused_logo_info"></span>
+    </p>
+    <?php endif; ?>
+
+    <input type="hidden" name="reused_logo" id="reused_logo" value="">
+
     <p>
         <label>Företagsnamn:<br>
-        <input type="text" name="company_name" value="<?= htmlspecialchars($values['company_name']) ?>" required></label>
+        <input type="text" name="company_name" id="company_name" value="<?= htmlspecialchars($values['company_name']) ?>" required></label>
     </p>
 
     <p>
@@ -219,12 +262,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label><input type="checkbox" name="remove_logo" value="1"> Ta bort loggan</label><br>
         <?php endif; ?>
         <label>Ladda upp ny logga (jpg, png eller svg):<br>
-        <input type="file" name="company_logo" accept=".jpg,.jpeg,.png,.svg"></label>
+        <input type="file" name="company_logo" accept=".jpg,.jpeg,.png,.svg" onchange="document.getElementById('reused_logo').value = ''; document.getElementById('reused_logo_info').textContent = this.value ? 'Ny uppladdad fil används istället för eventuell återanvänd logga.' : '';"></label>
     </p>
 
     <p><button type="submit"><?= $id ? 'Spara ändringar' : 'Skapa bokning' ?></button></p>
 </form>
 
 <p><a href="index.php">Tillbaka till listan</a></p>
+
+<script>
+function fillCompany(select) {
+    var option = select.options[select.selectedIndex];
+    var name = option.value;
+    var logo = option.getAttribute('data-logo') || '';
+    var info = document.getElementById('reused_logo_info');
+
+    if (name === '') {
+        info.textContent = '';
+        return;
+    }
+
+    document.getElementById('company_name').value = name;
+    document.getElementById('reused_logo').value = logo;
+    document.querySelector('input[name="company_logo"]').value = '';
+    info.textContent = logo ? 'Återanvänder logga: ' + logo : 'Inget tidigare logga sparad för detta företag.';
+}
+
+<?php if ($previousCompanies): ?>
+document.getElementById('company_picker').addEventListener('change', function () {
+    fillCompany(this);
+});
+<?php endif; ?>
+</script>
 </body>
 </html>
