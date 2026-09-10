@@ -24,6 +24,9 @@
     --color-button-bg: #2C2C2A;
     --color-button-text: #FFFFFF;
     --color-image-panel-bg: #EFE8DC;
+    --color-surface-muted: #F1EFE8;
+    --color-selected-bg: #2C2C2A;
+    --color-selected-text: #FFFFFF;
 
     --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -395,6 +398,381 @@ button:hover,
 }
 
 /* ==========================================================================
+   Bokningsformuläret (booking_form.php)
+   ========================================================================== */
+
+.booking-form-container {
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 8px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-section > label {
+    margin-bottom: 0;
+}
+
+/* Företag: textfält + "Återanvänd"-dropdown */
+
+.company-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.company-input-row input[type="text"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.reuse-dropdown {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.btn-reuse {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-surface-muted);
+    color: var(--color-heading);
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.reuse-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 240px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: #FFFFFF;
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(44, 44, 42, 0.12);
+    padding: 6px;
+    z-index: 20;
+}
+
+.reuse-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: var(--color-heading);
+    cursor: pointer;
+}
+
+.reuse-option:hover {
+    background: var(--color-surface-muted);
+}
+
+.reuse-option-note {
+    color: var(--color-help);
+}
+
+.field-hint {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: var(--color-help);
+    margin: 0;
+}
+
+.inline-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+/* Lokal: klickbara knappar istället för <select> */
+
+.room-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.room-btn {
+    background: var(--color-bg-card);
+    color: var(--color-heading);
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+}
+
+.room-btn:hover {
+    background: var(--color-surface-muted);
+}
+
+.room-btn.selected {
+    background: var(--color-selected-bg);
+    border-color: var(--color-selected-bg);
+    color: var(--color-selected-text);
+}
+
+/* Datum och tid */
+
+.datetime-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.datetime-box {
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.calendar-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: var(--color-heading);
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--color-body);
+    font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.calendar-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--color-body);
+    cursor: pointer;
+}
+
+.calendar-nav-btn:hover {
+    background: var(--color-surface-muted);
+    color: var(--color-heading);
+}
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.cal-weekdays {
+    margin-bottom: 4px;
+}
+
+.cal-weekday {
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: var(--color-help);
+}
+
+.cal-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: var(--color-heading);
+    cursor: pointer;
+}
+
+.cal-day:hover:not(.selected) {
+    background: var(--color-surface-muted);
+}
+
+.cal-day.selected {
+    background: var(--color-selected-bg);
+    color: var(--color-selected-text);
+}
+
+.cal-day-outside {
+    color: var(--color-input-border);
+    cursor: default;
+}
+
+.time-picker {
+    display: flex;
+    gap: 16px;
+}
+
+.time-column {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-column-label {
+    font-weight: 500;
+    color: var(--color-help);
+}
+
+.time-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.time-option {
+    text-align: left;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-card);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    color: var(--color-heading);
+    cursor: pointer;
+}
+
+.time-option:hover {
+    background: var(--color-surface-muted);
+}
+
+.time-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    background: var(--color-selected-bg);
+    color: var(--color-selected-text);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+}
+
+/* Logotyp: streckad uppladdningsruta */
+
+.upload-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px dashed var(--color-input-border);
+    border-radius: 4px;
+    padding: 32px 16px;
+    color: var(--color-help);
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.upload-drop i {
+    font-size: 22px;
+}
+
+.upload-drop:hover,
+.upload-drop.dragover {
+    background: var(--color-surface-muted);
+}
+
+/* Formulärets knappar */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.form-actions .btn-primary {
+    border-radius: 4px;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface-muted);
+    color: var(--color-heading);
+    border: none;
+    border-radius: 4px;
+    padding: 14px 24px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.2px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    opacity: 0.85;
+}
+
+/* ==========================================================================
    Mobil: sänk exakt de textstorlekar som höjdes till 16px ovan (inte
    rubriker eller andra element som redan var 16px+) till 14px under 650px.
    ========================================================================== */
@@ -417,7 +795,18 @@ button:hover,
     .admin-nav-new,
     .booking-list th,
     .booking-list td,
-    .company-thumb-placeholder {
+    .company-thumb-placeholder,
+    .btn-reuse,
+    .reuse-option,
+    .field-hint,
+    .room-btn,
+    .calendar-title,
+    .link-btn,
+    .cal-weekday,
+    .cal-day,
+    .time-option,
+    .time-chip,
+    .btn-secondary {
         font-size: 14px;
     }
 }

@@ -198,19 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-<meta charset="UTF-8">
-<title><?= $id ? 'Redigera bokning' : 'Ny bokning' ?> - hhk-skylt admin</title>
-</head>
-<body>
-<h1><?= $id ? 'Redigera bokning' : 'Ny bokning' ?></h1>
 
-<?php render_errors($errors); ?>
-
-<?php
 $actionParams = [];
 if ($id) {
     $actionParams['id'] = $id;
@@ -219,92 +207,437 @@ if ($return === 'historik') {
     $actionParams['return'] = 'historik';
 }
 $actionUrl = 'booking_form.php' . ($actionParams ? '?' . http_build_query($actionParams) : '');
+
+$currentPage = 'bookings';
 ?>
-<form method="post" action="<?= htmlspecialchars($actionUrl) ?>" enctype="multipart/form-data">
-    <?php if ($id): ?>
-    <input type="hidden" name="id" value="<?= (int) $id ?>">
-    <?php endif; ?>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?= $id ? 'Redigera bokning' : 'Ny bokning' ?> - hhk-skylt admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.46.0/tabler-icons.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="admin-page">
+    <?php require __DIR__ . '/nav.php'; ?>
 
-    <?php if ($previousCompanies): ?>
-    <p>
-        <label>Återanvänd tidigare företag:<br>
-        <select id="company_picker">
-            <option value="">-- Skriv in nytt/eget företag --</option>
-            <?php foreach ($previousCompanies as $previousCompany): ?>
-            <option value="<?= htmlspecialchars($previousCompany['company_name']) ?>" data-logo="<?= htmlspecialchars($previousCompany['company_logo'] ?? '') ?>">
-                <?= htmlspecialchars($previousCompany['company_name']) ?><?= $previousCompany['company_logo'] ? '' : ' (ingen logga sparad)' ?>
-            </option>
-            <?php endforeach; ?>
-        </select></label>
-        <br>
-        <span id="reused_logo_info"></span>
-    </p>
-    <?php endif; ?>
+    <div class="booking-form-container">
+        <h1><?= $id ? 'Redigera bokning' : 'Ny bokning' ?></h1>
 
-    <input type="hidden" name="reused_logo" id="reused_logo" value="">
+        <?php render_errors($errors); ?>
 
-    <p>
-        <label>Företagsnamn:<br>
-        <input type="text" name="company_name" id="company_name" value="<?= htmlspecialchars($values['company_name']) ?>" required></label>
-    </p>
+        <form method="post" action="<?= htmlspecialchars($actionUrl) ?>" enctype="multipart/form-data" class="booking-form" id="booking-form" data-initial-start="<?= htmlspecialchars($values['start_time']) ?>" data-initial-end="<?= htmlspecialchars($values['end_time']) ?>">
+            <?php if ($id): ?>
+            <input type="hidden" name="id" value="<?= (int) $id ?>">
+            <?php endif; ?>
 
-    <p>
-        <label>Lokal:<br>
-        <select name="room_id" required>
-            <option value="">Välj lokal</option>
-            <?php foreach ($rooms as $room): ?>
-            <option value="<?= (int) $room['id'] ?>" <?= (string) $room['id'] === (string) $values['room_id'] ? 'selected' : '' ?>><?= htmlspecialchars($room['name']) ?></option>
-            <?php endforeach; ?>
-        </select></label>
-    </p>
+            <!-- Företag -->
+            <div class="form-section">
+                <label for="company_name">Företag</label>
+                <div class="company-input-row">
+                    <input type="text" id="company_name" name="company_name" placeholder="Ange företagsnamn" value="<?= htmlspecialchars($values['company_name']) ?>" required autocomplete="off">
+                    <?php if ($previousCompanies): ?>
+                    <div class="reuse-dropdown">
+                        <button type="button" class="btn-reuse" id="reuse-toggle" aria-expanded="false">
+                            Återanvänd <i class="ti ti-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <div class="reuse-panel" id="reuse-panel" hidden>
+                            <?php foreach ($previousCompanies as $previousCompany): ?>
+                            <button type="button" class="reuse-option" data-name="<?= htmlspecialchars($previousCompany['company_name']) ?>" data-logo="<?= htmlspecialchars($previousCompany['company_logo'] ?? '') ?>">
+                                <?= htmlspecialchars($previousCompany['company_name']) ?><?= $previousCompany['company_logo'] ? '' : ' <span class="reuse-option-note">(ingen logga)</span>' ?>
+                            </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <input type="hidden" name="reused_logo" id="reused_logo" value="">
+                <p class="field-hint" id="reused_logo_info"></p>
+            </div>
 
-    <p>
-        <label>Starttid:<br>
-        <input type="datetime-local" name="start_time" value="<?= htmlspecialchars($values['start_time']) ?>" required></label>
-    </p>
+            <!-- Lokal -->
+            <div class="form-section">
+                <label>Lokal</label>
+                <div class="room-picker" id="room-picker">
+                    <?php foreach ($rooms as $room): ?>
+                    <button type="button" class="room-btn<?= (string) $room['id'] === (string) $values['room_id'] ? ' selected' : '' ?>" data-room-id="<?= (int) $room['id'] ?>"><?= htmlspecialchars($room['name']) ?></button>
+                    <?php endforeach; ?>
+                </div>
+                <input type="hidden" name="room_id" id="room_id_field" value="<?= htmlspecialchars($values['room_id']) ?>">
+            </div>
 
-    <p>
-        <label>Sluttid:<br>
-        <input type="datetime-local" name="end_time" value="<?= htmlspecialchars($values['end_time']) ?>" required></label>
-    </p>
+            <!-- Datum och tid -->
+            <div class="form-section">
+                <label>Datum och tid</label>
+                <div class="datetime-grid">
+                    <div class="datetime-box" id="calendar-box"></div>
+                    <div class="datetime-box" id="time-box"></div>
+                </div>
+                <input type="hidden" name="start_time" id="start_time_field" value="<?= htmlspecialchars($values['start_time']) ?>">
+                <input type="hidden" name="end_time" id="end_time_field" value="<?= htmlspecialchars($values['end_time']) ?>">
+            </div>
 
-    <p>
-        <?php if ($currentLogo): ?>
-        Nuvarande logga: <?= htmlspecialchars($currentLogo) ?><br>
-        <label><input type="checkbox" name="remove_logo" value="1"> Ta bort loggan</label><br>
-        <?php endif; ?>
-        <label>Ladda upp ny logga (jpg, png eller svg):<br>
-        <input type="file" name="company_logo" accept=".jpg,.jpeg,.png,.svg" onchange="document.getElementById('reused_logo').value = ''; document.getElementById('reused_logo_info').textContent = this.value ? 'Ny uppladdad fil används istället för eventuell återanvänd logga.' : '';"></label>
-    </p>
+            <!-- Logotyp -->
+            <div class="form-section">
+                <label>Logotyp</label>
+                <?php if ($currentLogo): ?>
+                <p class="field-hint">
+                    Nuvarande logga: <?= htmlspecialchars($currentLogo) ?>
+                    &nbsp;&middot;&nbsp;
+                    <label class="inline-checkbox"><input type="checkbox" name="remove_logo" value="1"> Ta bort loggan</label>
+                </p>
+                <?php endif; ?>
+                <label class="upload-drop" id="upload-drop">
+                    <i class="ti ti-upload" aria-hidden="true"></i>
+                    <span>Välj fil eller dra hit</span>
+                    <input type="file" name="company_logo" id="company_logo_input" accept=".jpg,.jpeg,.png,.svg" hidden>
+                </label>
+                <p class="field-hint" id="upload-filename"></p>
+            </div>
 
-    <p><button type="submit"><?= $id ? 'Spara ändringar' : 'Skapa bokning' ?></button></p>
-</form>
-
-<p><a href="<?= htmlspecialchars($returnUrl) ?>"><?= $return === 'historik' ? 'Tillbaka till historik' : 'Tillbaka till listan' ?></a></p>
+            <div class="form-actions">
+                <a href="<?= htmlspecialchars($returnUrl) ?>" class="btn-secondary">Avbryt</a>
+                <button type="submit" class="btn-primary"><?= $id ? 'Spara ändringar' : 'Skapa bokning' ?></button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
-function fillCompany(select) {
-    var option = select.options[select.selectedIndex];
-    var name = option.value;
-    var logo = option.getAttribute('data-logo') || '';
-    var info = document.getElementById('reused_logo_info');
+(function () {
+    'use strict';
 
-    if (name === '') {
-        info.textContent = '';
-        return;
+    var form = document.getElementById('booking-form');
+
+    /* ---------- Återanvänd företag ---------- */
+
+    var reuseToggle = document.getElementById('reuse-toggle');
+    var reusePanel = document.getElementById('reuse-panel');
+    var companyNameInput = document.getElementById('company_name');
+    var reusedLogoField = document.getElementById('reused_logo');
+    var reusedLogoInfo = document.getElementById('reused_logo_info');
+
+    if (reuseToggle && reusePanel) {
+        reuseToggle.addEventListener('click', function () {
+            var isOpen = !reusePanel.hidden;
+            reusePanel.hidden = isOpen;
+            reuseToggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!reusePanel.hidden && !reusePanel.contains(event.target) && event.target !== reuseToggle && !reuseToggle.contains(event.target)) {
+                reusePanel.hidden = true;
+                reuseToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        Array.prototype.forEach.call(reusePanel.querySelectorAll('.reuse-option'), function (option) {
+            option.addEventListener('click', function () {
+                var name = option.getAttribute('data-name') || '';
+                var logo = option.getAttribute('data-logo') || '';
+
+                companyNameInput.value = name;
+                reusedLogoField.value = logo;
+                document.getElementById('company_logo_input').value = '';
+                reusedLogoInfo.textContent = logo ? 'Återanvänder logga: ' + logo : 'Inget tidigare logga sparad för detta företag.';
+
+                reusePanel.hidden = true;
+                reuseToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
     }
 
-    document.getElementById('company_name').value = name;
-    document.getElementById('reused_logo').value = logo;
-    document.querySelector('input[name="company_logo"]').value = '';
-    info.textContent = logo ? 'Återanvänder logga: ' + logo : 'Inget tidigare logga sparad för detta företag.';
-}
+    /* ---------- Lokal ---------- */
 
-<?php if ($previousCompanies): ?>
-document.getElementById('company_picker').addEventListener('change', function () {
-    fillCompany(this);
-});
-<?php endif; ?>
+    var roomPicker = document.getElementById('room-picker');
+    var roomIdField = document.getElementById('room_id_field');
+
+    if (roomPicker) {
+        Array.prototype.forEach.call(roomPicker.querySelectorAll('.room-btn'), function (btn) {
+            btn.addEventListener('click', function () {
+                Array.prototype.forEach.call(roomPicker.querySelectorAll('.room-btn'), function (b) {
+                    b.classList.remove('selected');
+                });
+                btn.classList.add('selected');
+                roomIdField.value = btn.getAttribute('data-room-id');
+            });
+        });
+    }
+
+    /* ---------- Logotyp: dra-och-släpp ---------- */
+
+    var uploadDrop = document.getElementById('upload-drop');
+    var uploadInput = document.getElementById('company_logo_input');
+    var uploadFilename = document.getElementById('upload-filename');
+
+    if (uploadDrop && uploadInput) {
+        uploadInput.addEventListener('change', function () {
+            reusedLogoField.value = '';
+            if (uploadInput.files && uploadInput.files[0]) {
+                uploadFilename.textContent = 'Vald fil: ' + uploadInput.files[0].name;
+                if (reusedLogoInfo) {
+                    reusedLogoInfo.textContent = 'Ny uppladdad fil används istället för eventuell återanvänd logga.';
+                }
+            } else {
+                uploadFilename.textContent = '';
+            }
+        });
+
+        ['dragenter', 'dragover'].forEach(function (eventName) {
+            uploadDrop.addEventListener(eventName, function (event) {
+                event.preventDefault();
+                uploadDrop.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(function (eventName) {
+            uploadDrop.addEventListener(eventName, function (event) {
+                event.preventDefault();
+                uploadDrop.classList.remove('dragover');
+            });
+        });
+
+        uploadDrop.addEventListener('drop', function (event) {
+            var files = event.dataTransfer && event.dataTransfer.files;
+            if (files && files.length) {
+                uploadInput.files = files;
+                uploadInput.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
+    /* ---------- Datum och tid ---------- */
+
+    var MONTH_NAMES = ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'];
+    var WEEKDAY_LETTERS = ['M', 'T', 'O', 'T', 'F', 'L', 'S'];
+
+    function pad(n) {
+        return n < 10 ? '0' + n : String(n);
+    }
+
+    function parseDatetimeLocal(str) {
+        if (!str) {
+            return null;
+        }
+        var parts = str.split('T');
+        var dateParts = parts[0].split('-').map(Number);
+        var timeParts = (parts[1] || '00:00').split(':').map(Number);
+        return {
+            y: dateParts[0],
+            m: dateParts[1] - 1,
+            d: dateParts[2],
+            h: timeParts[0],
+            min: timeParts[1]
+        };
+    }
+
+    var initialStart = parseDatetimeLocal(form.dataset.initialStart);
+    var initialEnd = parseDatetimeLocal(form.dataset.initialEnd);
+    var today = new Date();
+
+    var state = {
+        date: initialStart ? { y: initialStart.y, m: initialStart.m, d: initialStart.d } : { y: today.getFullYear(), m: today.getMonth(), d: today.getDate() },
+        startHour: initialStart ? initialStart.h : null,
+        startMinute: initialStart ? initialStart.min : 0,
+        endHour: initialEnd ? initialEnd.h : null,
+        endMinute: initialEnd ? initialEnd.min : 0
+    };
+    var viewYear = state.date.y;
+    var viewMonth = state.date.m;
+
+    var startTimeField = document.getElementById('start_time_field');
+    var endTimeField = document.getElementById('end_time_field');
+    var calendarBox = document.getElementById('calendar-box');
+    var timeBox = document.getElementById('time-box');
+
+    function sync() {
+        if (state.date && state.startHour !== null) {
+            startTimeField.value = state.date.y + '-' + pad(state.date.m + 1) + '-' + pad(state.date.d) + 'T' + pad(state.startHour) + ':' + pad(state.startMinute);
+        } else {
+            startTimeField.value = '';
+        }
+
+        if (state.date && state.endHour !== null) {
+            endTimeField.value = state.date.y + '-' + pad(state.date.m + 1) + '-' + pad(state.date.d) + 'T' + pad(state.endHour) + ':' + pad(state.endMinute);
+        } else {
+            endTimeField.value = '';
+        }
+    }
+
+    function renderCalendar() {
+        var firstOfMonth = new Date(viewYear, viewMonth, 1);
+        var startWeekday = (firstOfMonth.getDay() + 6) % 7; // 0 = måndag
+        var daysInThisMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        var daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+
+        var html = '';
+        html += '<div class="calendar-header">';
+        html += '<span class="calendar-title">' + MONTH_NAMES[viewMonth] + ' ' + viewYear + '</span>';
+        html += '<div class="calendar-nav">';
+        html += '<button type="button" class="link-btn" data-action="today">Idag</button>';
+        html += '<button type="button" class="calendar-nav-btn" data-action="prev" aria-label="Föregående månad"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>';
+        html += '<button type="button" class="calendar-nav-btn" data-action="next" aria-label="Nästa månad"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="cal-grid cal-weekdays">';
+        WEEKDAY_LETTERS.forEach(function (letter) {
+            html += '<div class="cal-weekday">' + letter + '</div>';
+        });
+        html += '</div>';
+
+        html += '<div class="cal-grid">';
+
+        for (var i = 0; i < startWeekday; i++) {
+            html += '<span class="cal-day cal-day-outside">' + (daysInPrevMonth - startWeekday + 1 + i) + '</span>';
+        }
+
+        for (var day = 1; day <= daysInThisMonth; day++) {
+            var isSelected = state.date && state.date.y === viewYear && state.date.m === viewMonth && state.date.d === day;
+            html += '<button type="button" class="cal-day' + (isSelected ? ' selected' : '') + '" data-day="' + day + '">' + day + '</button>';
+        }
+
+        var totalCells = startWeekday + daysInThisMonth;
+        var trailing = (7 - (totalCells % 7)) % 7;
+        for (var t = 1; t <= trailing; t++) {
+            html += '<span class="cal-day cal-day-outside">' + t + '</span>';
+        }
+
+        html += '</div>';
+
+        calendarBox.innerHTML = html;
+
+        calendarBox.querySelector('[data-action="today"]').addEventListener('click', function () {
+            var now = new Date();
+            viewYear = now.getFullYear();
+            viewMonth = now.getMonth();
+            state.date = { y: viewYear, m: viewMonth, d: now.getDate() };
+            renderCalendar();
+            sync();
+        });
+
+        calendarBox.querySelector('[data-action="prev"]').addEventListener('click', function () {
+            viewMonth -= 1;
+            if (viewMonth < 0) {
+                viewMonth = 11;
+                viewYear -= 1;
+            }
+            renderCalendar();
+        });
+
+        calendarBox.querySelector('[data-action="next"]').addEventListener('click', function () {
+            viewMonth += 1;
+            if (viewMonth > 11) {
+                viewMonth = 0;
+                viewYear += 1;
+            }
+            renderCalendar();
+        });
+
+        Array.prototype.forEach.call(calendarBox.querySelectorAll('.cal-day[data-day]'), function (btn) {
+            btn.addEventListener('click', function () {
+                state.date = { y: viewYear, m: viewMonth, d: parseInt(btn.getAttribute('data-day'), 10) };
+                renderCalendar();
+                sync();
+            });
+        });
+    }
+
+    function formatHour(h) {
+        return pad(h) + ':00';
+    }
+
+    function renderTimePicker() {
+        var html = '<div class="time-picker">';
+
+        // Starttid
+        html += '<div class="time-column">';
+        html += '<div class="time-column-label">Starttid</div>';
+        if (state.startHour === null) {
+            html += '<div class="time-options">';
+            for (var h = 0; h <= 23; h++) {
+                html += '<button type="button" class="time-option" data-start-hour="' + h + '">' + formatHour(h) + '</button>';
+            }
+            html += '</div>';
+        } else {
+            html += '<button type="button" class="time-chip" id="start-chip">';
+            html += '<span>' + formatHour(state.startHour) + '</span>';
+            html += '<i class="ti ti-pencil" aria-hidden="true"></i>';
+            html += '</button>';
+        }
+        html += '</div>';
+
+        // Sluttid
+        html += '<div class="time-column">';
+        if (state.startHour !== null) {
+            html += '<div class="time-column-label">Sluttid</div>';
+            if (state.endHour === null) {
+                html += '<div class="time-options">';
+                for (var eh = state.startHour + 1; eh <= 23; eh++) {
+                    html += '<button type="button" class="time-option" data-end-hour="' + eh + '">' + formatHour(eh) + '</button>';
+                }
+                html += '</div>';
+            } else {
+                html += '<button type="button" class="time-chip" id="end-chip">';
+                html += '<span>' + formatHour(state.endHour) + '</span>';
+                html += '<i class="ti ti-pencil" aria-hidden="true"></i>';
+                html += '</button>';
+            }
+        }
+        html += '</div>';
+
+        html += '</div>';
+
+        timeBox.innerHTML = html;
+
+        Array.prototype.forEach.call(timeBox.querySelectorAll('[data-start-hour]'), function (btn) {
+            btn.addEventListener('click', function () {
+                state.startHour = parseInt(btn.getAttribute('data-start-hour'), 10);
+                state.startMinute = 0;
+                state.endHour = null;
+                state.endMinute = 0;
+                renderTimePicker();
+                sync();
+            });
+        });
+
+        Array.prototype.forEach.call(timeBox.querySelectorAll('[data-end-hour]'), function (btn) {
+            btn.addEventListener('click', function () {
+                state.endHour = parseInt(btn.getAttribute('data-end-hour'), 10);
+                state.endMinute = 0;
+                renderTimePicker();
+                sync();
+            });
+        });
+
+        var startChip = document.getElementById('start-chip');
+        if (startChip) {
+            startChip.addEventListener('click', function () {
+                state.startHour = null;
+                state.endHour = null;
+                renderTimePicker();
+                sync();
+            });
+        }
+
+        var endChip = document.getElementById('end-chip');
+        if (endChip) {
+            endChip.addEventListener('click', function () {
+                state.endHour = null;
+                renderTimePicker();
+                sync();
+            });
+        }
+    }
+
+    renderCalendar();
+    renderTimePicker();
+})();
 </script>
 </body>
 </html>
