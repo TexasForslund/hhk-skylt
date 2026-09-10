@@ -49,11 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="login-card">
     <div class="login-panel login-panel-form">
         <p class="login-eyebrow">
-            <?php
-            // Byt ut raden nedan mot en logotyp-bild när en sådan finns, t.ex.:
-            // <img src="/uploads/logo-hotellhoga-kusten.svg" alt="Hotell Höga Kusten" class="login-logo">
-            ?>
-            HOTELL HÖGA KUSTEN
+            <img src="/assets/logga.png" alt="Hotell Höga Kusten" class="login-logo">
         </p>
 
         <h1>Logga in</h1>
@@ -77,21 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="login-panel login-panel-image">
-        <?php
-        // Platshållare för hotellbild. Byt ut hela .login-image-placeholder-diven
-        // nedan mot t.ex.:
-        // <img src="/uploads/login-bild.jpg" alt="Hotell Höga Kusten" class="login-image">
-        // när en riktig bild finns. Lägg då även till en .login-image-regel i
-        // style.css (width/height: 100%, object-fit: cover).
-        ?>
-        <div class="login-image-placeholder">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-            <span>Bild kommer här</span>
-        </div>
+        <img src="/assets/login.jpg" alt="" class="login-hero">
     </div>
 </div>
 </body>

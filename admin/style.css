@@ -147,6 +147,12 @@ button:hover,
     margin: 0;
 }
 
+.login-logo {
+    display: block;
+    max-height: 44px;
+    width: auto;
+}
+
 .login-panel-form h1 {
     font-size: 32px;
 }
@@ -176,20 +182,13 @@ button:hover,
 
 .login-panel-image {
     background: var(--color-image-panel-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.login-image-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    color: var(--color-help);
-    font-family: var(--font-body);
-    font-size: 14px;
-    text-align: center;
+.login-hero {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 @media (max-width: 520px) {
