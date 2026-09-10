@@ -1,20 +1,21 @@
 <?php
 session_start();
 require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/helpers.php';
 
 if (!empty($_SESSION['admin_logged_in'])) {
     header('Location: index.php');
     exit;
 }
 
-$error = '';
+$errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
     if ($username === '' || $password === '') {
-        $error = 'Ange användarnamn och lösenord.';
+        $errors[] = 'Ange användarnamn och lösenord.';
     } else {
         $stmt = $pdo->prepare('SELECT id, password_hash FROM admin_users WHERE username = ?');
         $stmt->execute([$username]);
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php');
             exit;
         } else {
-            $error = 'Fel användarnamn eller lösenord.';
+            $errors[] = 'Fel användarnamn eller lösenord.';
         }
     }
 }
@@ -42,9 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <h1>Logga in</h1>
 
-<?php if ($error !== ''): ?>
-<p><?= htmlspecialchars($error) ?></p>
-<?php endif; ?>
+<?php render_errors($errors); ?>
 
 <form method="post" action="login.php">
     <p>

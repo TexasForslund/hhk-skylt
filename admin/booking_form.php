@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/helpers.php';
 
 const ALLOWED_LOGO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'svg'];
 const UPLOAD_DIR = __DIR__ . '/../uploads/';
@@ -74,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if ($values['start_time'] === '' || $values['end_time'] === '') {
         $errors[] = 'Start- och sluttid krävs.';
+    } elseif ($values['end_time'] <= $values['start_time']) {
+        $errors[] = 'Sluttid måste vara efter starttid.';
     }
 
     $companyLogo = $currentLogo;
@@ -143,13 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <h1><?= $id ? 'Redigera bokning' : 'Ny bokning' ?></h1>
 
-<?php if ($errors): ?>
-<ul>
-    <?php foreach ($errors as $error): ?>
-    <li><?= htmlspecialchars($error) ?></li>
-    <?php endforeach; ?>
-</ul>
-<?php endif; ?>
+<?php render_errors($errors); ?>
 
 <form method="post" action="booking_form.php<?= $id ? '?id=' . (int) $id : '' ?>" enctype="multipart/form-data">
     <?php if ($id): ?>
