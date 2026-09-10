@@ -41,6 +41,8 @@ function isValidLogoUpload(array $file, string $extension): bool
 }
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : null);
+$return = (($_GET['return'] ?? '') === 'historik') ? 'historik' : 'index';
+$returnUrl = $return === 'historik' ? 'historik.php' : 'index.php';
 $booking = null;
 
 if ($id) {
@@ -192,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        header('Location: index.php');
+        header('Location: ' . $returnUrl);
         exit;
     }
 }
@@ -208,7 +210,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php render_errors($errors); ?>
 
-<form method="post" action="booking_form.php<?= $id ? '?id=' . (int) $id : '' ?>" enctype="multipart/form-data">
+<?php
+$actionParams = [];
+if ($id) {
+    $actionParams['id'] = $id;
+}
+if ($return === 'historik') {
+    $actionParams['return'] = 'historik';
+}
+$actionUrl = 'booking_form.php' . ($actionParams ? '?' . http_build_query($actionParams) : '');
+?>
+<form method="post" action="<?= htmlspecialchars($actionUrl) ?>" enctype="multipart/form-data">
     <?php if ($id): ?>
     <input type="hidden" name="id" value="<?= (int) $id ?>">
     <?php endif; ?>
@@ -268,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p><button type="submit"><?= $id ? 'Spara ändringar' : 'Skapa bokning' ?></button></p>
 </form>
 
-<p><a href="index.php">Tillbaka till listan</a></p>
+<p><a href="<?= htmlspecialchars($returnUrl) ?>"><?= $return === 'historik' ? 'Tillbaka till historik' : 'Tillbaka till listan' ?></a></p>
 
 <script>
 function fillCompany(select) {

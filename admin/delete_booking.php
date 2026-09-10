@@ -21,5 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['id'])) {
     }
 }
 
-header('Location: index.php');
+$returnUrl = (($_POST['return'] ?? '') === 'historik') ? 'historik.php' : 'index.php';
+header('Location: ' . $returnUrl);
 exit;
