@@ -6,14 +6,16 @@ $roomNames = $pdo->query('SELECT DISTINCT room FROM bookings ORDER BY room')->fe
 $activeStmt = $pdo->prepare('
     SELECT company_name, company_logo
     FROM bookings
-    WHERE room = ? AND NOW() BETWEEN start_time AND end_time
+    WHERE room = ? AND ? BETWEEN start_time AND end_time
     ORDER BY start_time
     LIMIT 1
 ');
 
+$now = date('Y-m-d H:i:s');
+
 $rooms = [];
 foreach ($roomNames as $roomName) {
-    $activeStmt->execute([$roomName]);
+    $activeStmt->execute([$roomName, $now]);
     $active = $activeStmt->fetch();
     $rooms[] = [
         'room' => $roomName,
