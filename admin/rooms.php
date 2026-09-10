@@ -77,43 +77,53 @@ $currentPage = 'rooms';
 
     <?php render_errors($errors); ?>
 
-<table border="1" cellpadding="4">
+<table class="booking-list">
+<thead>
 <tr>
     <th>Namn</th>
-    <th>Åtgärder</th>
+    <th class="text-right">Åtgärder</th>
 </tr>
+</thead>
+<tbody>
 <?php foreach ($rooms as $room): ?>
 <tr>
     <td><?= htmlspecialchars($room['name']) ?></td>
     <td>
-        <a href="rooms.php?edit=<?= (int) $room['id'] ?>">Redigera</a>
-        &nbsp;
-        <form method="post" action="delete_room.php" onsubmit="return confirm('Ta bort lokalen?');">
-            <input type="hidden" name="id" value="<?= (int) $room['id'] ?>">
-            <button type="submit">Ta bort</button>
-        </form>
+        <div class="row-actions">
+            <a href="rooms.php?edit=<?= (int) $room['id'] ?>" title="Redigera" aria-label="Redigera lokal <?= htmlspecialchars($room['name']) ?>">
+                <i class="ti ti-edit" aria-hidden="true"></i>
+            </a>
+            <form method="post" action="delete_room.php" onsubmit="return confirm('Ta bort lokalen?');">
+                <input type="hidden" name="id" value="<?= (int) $room['id'] ?>">
+                <button type="submit" title="Ta bort" aria-label="Ta bort lokal <?= htmlspecialchars($room['name']) ?>">
+                    <i class="ti ti-trash" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
     </td>
 </tr>
 <?php endforeach; ?>
 <?php if (!$rooms): ?>
 <tr><td colspan="2">Inga lokaler.</td></tr>
 <?php endif; ?>
+</tbody>
 </table>
 
 <h2><?= $editId ? 'Redigera lokal' : 'Lägg till lokal' ?></h2>
 
-<form method="post" action="rooms.php">
+<form method="post" action="rooms.php" class="room-form">
     <input type="hidden" name="save_room" value="1">
     <?php if ($editId): ?>
     <input type="hidden" name="id" value="<?= (int) $editId ?>">
     <?php endif; ?>
 
-    <p>
-        <label>Namn:<br>
-        <input type="text" name="name" value="<?= htmlspecialchars($nameValue) ?>" required></label>
-    </p>
-
-    <p><button type="submit"><?= $editId ? 'Spara ändringar' : 'Lägg till' ?></button></p>
+    <div class="room-form-row">
+        <input type="text" name="name" placeholder="Lokalnamn" value="<?= htmlspecialchars($nameValue) ?>" required>
+        <button type="submit" class="btn-primary">
+            <i class="ti ti-<?= $editId ? 'check' : 'plus' ?>" aria-hidden="true"></i>
+            <?= $editId ? 'Spara ändringar' : 'Lägg till' ?>
+        </button>
+    </div>
 </form>
 
     <?php if ($editId): ?>

@@ -398,6 +398,33 @@ button:hover,
 }
 
 /* ==========================================================================
+   Lokalsidan (rooms.php): lägg till/redigera-formuläret
+   ========================================================================== */
+
+.room-form {
+    max-width: 480px;
+    margin-top: 8px;
+}
+
+.room-form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.room-form-row input[type="text"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.room-form-row .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
    Bokningsformuläret (booking_form.php)
    ========================================================================== */
 
