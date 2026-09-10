@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Delade grundstilar för hela /admin
+   Färger, typsnitt och formulärelement som återanvänds på alla adminsidor
+   (index.php, rooms.php, booking_form.php, historik.php, ...).
+   Google Fonts (Inter/Open Sans) laddas via <link>-taggar i varje sidas
+   <head> - den här filen bara sätter font-family utifrån dem.
+   ========================================================================== */
+
+:root {
+    --color-bg-card: #FAFAF8;
+    --color-border-card: #E4E2DA;
+    --color-heading: #2C2C2A;
+    --color-body: #5F5E5A;
+    --color-help: #888780;
+    --color-input-border: #D3D1C7;
+    --color-button-bg: #2C2C2A;
+    --color-button-text: #FFFFFF;
+    --color-image-panel-bg: #EFE8DC;
+
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-body);
+    background: var(--color-image-panel-bg);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--color-heading);
+    margin: 0 0 8px;
+}
+
+p {
+    line-height: 1.5;
+}
+
+label {
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: var(--color-heading);
+    display: block;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="datetime-local"],
+input[type="file"],
+select {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-heading);
+    background: #FFFFFF;
+    border: 1px solid var(--color-input-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 100%;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid var(--color-heading);
+    outline-offset: 1px;
+}
+
+button,
+.btn-primary {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--color-button-bg);
+    color: var(--color-button-text);
+    border: none;
+    border-radius: 999px;
+    padding: 14px 24px;
+    cursor: pointer;
+}
+
+button:hover,
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.errors {
+    color: #B3261E;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding-left: 20px;
+}
+
+.help-text {
+    font-size: 13px;
+    color: var(--color-help);
+}
+
+/* ==========================================================================
+   Inloggningssidan (split-screen: formulär vänster, bild höger)
+   ========================================================================== */
+
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.login-card {
+    display: flex;
+    width: 100%;
+    max-width: 640px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-card);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.login-panel {
+    flex: 1 1 50%;
+    min-width: 0;
+}
+
+.login-panel-form {
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-eyebrow {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-help);
+    margin: 0;
+}
+
+.login-panel-form h1 {
+    font-size: 32px;
+}
+
+.login-subtitle {
+    margin: 0;
+    font-size: 15px;
+    color: var(--color-body);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-form .btn-primary {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.login-help {
+    font-size: 13px;
+    color: var(--color-help);
+    margin: 0;
+}
+
+.login-panel-image {
+    background: var(--color-image-panel-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-help);
+    font-family: var(--font-body);
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 520px) {
+    .login-panel-image {
+        display: none;
+    }
+
+    .login-panel-form {
+        padding: 32px 24px;
+    }
+}

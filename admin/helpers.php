@@ -6,7 +6,7 @@ function render_errors(array $errors): void
     if (!$errors) {
         return;
     }
-    echo '<ul>';
+    echo '<ul class="errors">';
     foreach ($errors as $error) {
         echo '<li>' . htmlspecialchars($error) . '</li>';
     }
