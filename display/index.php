@@ -49,9 +49,9 @@ $rooms = $stmt->fetchAll();
             <div class="room-row-name"><?= htmlspecialchars($room['room']) ?></div>
             <div class="room-row-company">
                 <?php if ($room['company_logo']): ?>
-                <img src="/uploads/<?= htmlspecialchars($room['company_logo']) ?>" alt="" class="room-row-logo">
+                <img src="/uploads/<?= htmlspecialchars($room['company_logo']) ?>" alt="" class="room-row-logo-image">
                 <?php else: ?>
-                <span class="room-row-logo room-row-logo-placeholder"><?= htmlspecialchars(companyInitials($room['company_name'])) ?></span>
+                <span class="room-row-logo-placeholder"><?= htmlspecialchars(companyInitials($room['company_name'])) ?></span>
                 <?php endif; ?>
                 <span class="room-row-company-name"><?= htmlspecialchars($room['company_name']) ?></span>
             </div>

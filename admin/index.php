@@ -50,9 +50,9 @@ $currentPage = 'bookings';
         <td>
             <div class="company-cell">
                 <?php if ($booking['company_logo']): ?>
-                <img src="/uploads/<?= htmlspecialchars($booking['company_logo']) ?>" alt="" class="company-thumb">
+                <img src="/uploads/<?= htmlspecialchars($booking['company_logo']) ?>" alt="" class="company-logo-image">
                 <?php else: ?>
-                <span class="company-thumb company-thumb-placeholder"><?= htmlspecialchars(companyInitials($booking['company_name'])) ?></span>
+                <span class="company-thumb-placeholder"><?= htmlspecialchars(companyInitials($booking['company_name'])) ?></span>
                 <?php endif; ?>
                 <span class="company-name"><?= htmlspecialchars($booking['company_name']) ?></span>
             </div>

@@ -100,20 +100,22 @@ body {
     gap: 1vw;
 }
 
-.room-row-logo {
+.room-row-logo-image {
     flex: 0 0 auto;
-    width: clamp(28px, 3vw, 44px);
-    height: clamp(28px, 3vw, 44px);
-    padding: 3px;
-    box-sizing: border-box;
-    border-radius: 4px;
+    height: 2.4vh;
+    width: auto;
+    max-width: 12vw;
     object-fit: contain;
 }
 
 .room-row-logo-placeholder {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: clamp(28px, 3vw, 44px);
+    height: clamp(28px, 3vw, 44px);
+    border-radius: 4px;
     background: var(--color-row-line);
     color: var(--color-column-header);
     font-family: var(--font-body);
