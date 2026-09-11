@@ -1,8 +1,18 @@
 <?php
 require_once __DIR__ . '/../db.php';
 
+// Två bokstäver att visa i platshållarrutan när ett företag saknar logga,
+// tagna från det första ordet i företagsnamnet (t.ex. "GT-Konsult AB" -> "GT").
+// Egen kopia (inte admin/helpers.php) eftersom /display är en helt separat,
+// gästvänd yta som inte ska bero på adminpanelens filer.
+function companyInitials(string $companyName): string
+{
+    $firstWord = explode(' ', trim($companyName), 2)[0];
+    return mb_strtoupper(mb_substr($firstWord, 0, 2));
+}
+
 $stmt = $pdo->prepare('
-    SELECT r.name AS room, b.company_name
+    SELECT r.name AS room, b.company_name, b.company_logo
     FROM bookings b
     JOIN rooms r ON r.id = b.room_id
     WHERE ? BETWEEN b.start_time AND b.end_time
@@ -29,11 +39,22 @@ $rooms = $stmt->fetchAll();
 <div class="display-page">
     <h1 class="display-title">I våra lokaler</h1>
 
-    <div class="room-list">
+    <div class="room-table">
+        <div class="room-table-header">
+            <span>Lokal</span>
+            <span>Företag</span>
+        </div>
         <?php foreach ($rooms as $room): ?>
-        <div class="room-entry">
-            <div class="room-entry-name"><?= htmlspecialchars($room['room']) ?></div>
-            <div class="room-entry-company"><?= htmlspecialchars($room['company_name']) ?></div>
+        <div class="room-row">
+            <div class="room-row-name"><?= htmlspecialchars($room['room']) ?></div>
+            <div class="room-row-company">
+                <?php if ($room['company_logo']): ?>
+                <img src="/uploads/<?= htmlspecialchars($room['company_logo']) ?>" alt="" class="room-row-logo">
+                <?php else: ?>
+                <span class="room-row-logo room-row-logo-placeholder"><?= htmlspecialchars(companyInitials($room['company_name'])) ?></span>
+                <?php endif; ?>
+                <span class="room-row-company-name"><?= htmlspecialchars($room['company_name']) ?></span>
+            </div>
         </div>
         <?php endforeach; ?>
     </div>

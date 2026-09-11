@@ -7,9 +7,12 @@
 
 :root {
     --color-bg: #FFF8F2;
-    --color-heading: #412402;
+    --color-heading: #2C2C2A;
     --color-text: #000000;
     --color-footer: #B4B2A9;
+    --color-column-header: #888780;
+    --color-row-line: #F1EFE8;
+    --color-header-line: #E4E2DA;
 
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -40,44 +43,83 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     background: var(--color-bg);
-    padding: 4vh 4vw;
+    padding: 5vh 5vw;
 }
 
 .display-title {
     margin: 0;
+    align-self: flex-start;
     font-family: var(--font-display);
     font-weight: 600;
     color: var(--color-heading);
-    text-align: center;
-    font-size: clamp(2rem, 4.5vw, 4rem);
+    text-align: left;
+    font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
-.room-list {
-    flex: 1;
+.room-table {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    margin-top: clamp(24px, 4vh, 48px);
+}
+
+.room-table-header,
+.room-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
     align-items: center;
-    justify-content: space-evenly;
+    gap: 2vw;
+    padding: clamp(10px, 1.6vh, 20px) 0;
 }
 
-.room-entry {
-    text-align: center;
+.room-table-header {
+    border-bottom: 1px solid var(--color-header-line);
 }
 
-.room-entry-name {
+.room-table-header span {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--color-column-header);
+    text-align: left;
+    font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+}
+
+.room-row {
+    border-bottom: 1px solid var(--color-row-line);
+}
+
+.room-row-name {
     font-family: var(--font-display);
     font-weight: 600;
     color: var(--color-heading);
-    text-decoration: underline;
-    text-underline-offset: 0.5em;
-    font-size: clamp(1.75rem, 3.5vw, 3.25rem);
+    font-size: clamp(1.25rem, 2.2vw, 2rem);
 }
 
-.room-entry-company {
-    margin-top: 0.5em;
+.room-row-company {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+}
+
+.room-row-logo {
+    flex: 0 0 auto;
+    width: clamp(28px, 3vw, 44px);
+    height: clamp(28px, 3vw, 44px);
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.room-row-logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-row-line);
+    color: var(--color-column-header);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: clamp(0.75rem, 1vw, 1rem);
+}
+
+.room-row-company-name {
     font-family: var(--font-body);
     font-weight: 500;
     color: var(--color-text);
@@ -86,6 +128,7 @@ body {
 
 .display-footer {
     margin: 0;
+    margin-top: auto;
     font-family: var(--font-body);
     color: var(--color-footer);
     font-size: clamp(0.75rem, 1vw, 1rem);
@@ -131,6 +174,7 @@ body {
     color: #FFFFFF;
     text-align: center;
     font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: -2px;
 }
 
 .display-footer-overlay {
