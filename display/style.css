@@ -1,0 +1,138 @@
+/* ==========================================================================
+   display/style.css
+   Publik TV-vy (/display) - helt egen stilmall, separat från adminpanelens
+   admin/style.css eftersom detta är en gästvänd yta med egen visuell
+   identitet (Cormorant Garamond/Inter, ej Inter/Open Sans som admin).
+   ========================================================================== */
+
+:root {
+    --color-bg: #FFF8F2;
+    --color-heading: #412402;
+    --color-text: #000000;
+    --color-footer: #B4B2A9;
+
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-body);
+}
+
+/* ==========================================================================
+   Bokat läge: minst en lokal har en aktiv bokning just nu
+   ========================================================================== */
+
+.display-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-bg);
+    padding: 4vh 4vw;
+}
+
+.display-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-heading);
+    text-align: center;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+}
+
+.room-list {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.room-entry {
+    text-align: center;
+}
+
+.room-entry-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-heading);
+    text-decoration: underline;
+    text-underline-offset: 0.5em;
+    font-size: clamp(1.75rem, 3.5vw, 3.25rem);
+}
+
+.room-entry-company {
+    margin-top: 0.5em;
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: var(--color-text);
+    font-size: clamp(1rem, 1.6vw, 1.5rem);
+}
+
+.display-footer {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-footer);
+    font-size: clamp(0.75rem, 1vw, 1rem);
+    text-align: center;
+}
+
+/* ==========================================================================
+   Tomläge: ingen lokal har en aktiv bokning just nu
+   ========================================================================== */
+
+.display-empty {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.display-empty-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.display-empty-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(16px, 4vh, 48px);
+    padding-bottom: clamp(20px, 4vh, 48px);
+    background: linear-gradient(to top, rgba(44, 44, 42, 0.55), rgba(44, 44, 42, 0));
+}
+
+.display-empty-title {
+    margin: 0;
+    padding: 0 6vw;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+.display-footer-overlay {
+    color: var(--color-footer);
+}
