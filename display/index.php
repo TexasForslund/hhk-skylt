@@ -59,6 +59,20 @@ $rooms = $stmt->fetchAll();
         <?php endforeach; ?>
     </div>
 
+    <div class="display-promo">
+        <img src="/assets/hotell-kusten.png" alt="" class="display-promo-image">
+        <div class="display-promo-gradient"></div>
+        <div class="display-promo-content">
+            <div class="display-promo-text">
+                <h2 class="display-promo-title">Vill du också boka en konferens?</h2>
+                <p class="display-promo-subtitle">Skanna koden för att komma till vår hemsida.</p>
+            </div>
+            <div class="display-promo-qr">
+                <img src="/assets/konferens-qr.png" alt="QR-kod till vår hemsida" class="display-promo-qr-image">
+            </div>
+        </div>
+    </div>
+
     <p class="display-footer">Hotell Höga Kusten</p>
 </div>
 <?php else: ?>

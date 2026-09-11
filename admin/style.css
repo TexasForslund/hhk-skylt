@@ -348,8 +348,10 @@ button:hover,
     flex: 0 0 auto;
     width: 28px;
     height: 28px;
+    padding: 2px;
+    box-sizing: border-box;
     border-radius: 4px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .company-thumb-placeholder {
