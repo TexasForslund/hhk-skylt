@@ -54,7 +54,7 @@ body {
     font-weight: 600;
     color: var(--color-heading);
     text-align: left;
-    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
 }
 
 .room-table {
@@ -80,7 +80,7 @@ body {
     font-weight: 400;
     color: var(--color-column-header);
     text-align: left;
-    font-size: clamp(0.85rem, 1.1vw, 1.1rem);
+    font-size: clamp(1.1rem, 1.4vw, 1.4rem);
 }
 
 .room-row {
@@ -91,7 +91,7 @@ body {
     font-family: var(--font-display);
     font-weight: 600;
     color: var(--color-heading);
-    font-size: clamp(1.25rem, 2.2vw, 2rem);
+    font-size: clamp(1.6rem, 2.8vw, 2.5rem);
 }
 
 .room-row-company {
@@ -120,14 +120,14 @@ body {
     color: var(--color-column-header);
     font-family: var(--font-body);
     font-weight: 600;
-    font-size: clamp(0.75rem, 1vw, 1rem);
+    font-size: clamp(0.95rem, 1.3vw, 1.3rem);
 }
 
 .room-row-company-name {
     font-family: var(--font-body);
     font-weight: 500;
     color: var(--color-text);
-    font-size: clamp(1rem, 1.6vw, 1.5rem);
+    font-size: clamp(1.3rem, 2vw, 1.9rem);
 }
 
 .display-promo {
@@ -172,14 +172,14 @@ body {
     font-family: var(--font-display);
     font-weight: 600;
     color: #FFFFFF;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: clamp(1.9rem, 3.8vw, 3.2rem);
 }
 
 .display-promo-subtitle {
     margin: 0;
     font-family: var(--font-body);
     color: rgba(255, 255, 255, 0.85);
-    font-size: clamp(0.9rem, 1.3vw, 1.25rem);
+    font-size: clamp(1.15rem, 1.65vw, 1.6rem);
 }
 
 .display-promo-qr {
@@ -201,7 +201,7 @@ body {
     margin-top: 1.5vh;
     font-family: var(--font-body);
     color: var(--color-footer);
-    font-size: clamp(0.75rem, 1vw, 1rem);
+    font-size: clamp(0.95rem, 1.3vw, 1.3rem);
     text-align: center;
 }
 
@@ -243,7 +243,7 @@ body {
     font-weight: 600;
     color: #FFFFFF;
     text-align: center;
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(3.2rem, 7.7vw, 6.4rem);
     letter-spacing: -2px;
 }
 
