@@ -54,7 +54,7 @@ body {
     font-weight: 600;
     color: var(--color-heading);
     text-align: left;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: clamp(3.5rem, 5vw, 4.5rem);
 }
 
 .room-table {
@@ -172,7 +172,7 @@ body {
     font-family: var(--font-display);
     font-weight: 600;
     color: #FFFFFF;
-    font-size: clamp(3rem, 4.2vw, 3.2rem);
+    font-size: clamp(2.5rem, 4vw, 3.2rem);
 }
 
 .display-promo-subtitle {
