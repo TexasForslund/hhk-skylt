@@ -191,8 +191,8 @@ body {
 
 .display-promo-qr-image {
     display: block;
-    width: clamp(80px, 10vw, 140px);
-    height: clamp(80px, 10vw, 140px);
+    width: clamp(80px, 15vw, 140px);
+    height: clamp(80px, 15vw, 140px);
     object-fit: contain;
 }
 
