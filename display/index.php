@@ -37,7 +37,7 @@ $rooms = $stmt->fetchAll();
 <body>
 <?php if ($rooms): ?>
 <div class="display-page">
-    <h1 class="display-title">I våra lokaler</h1>
+    <h1 class="display-title">I våra lokaler idag</h1>
 
     <div class="room-table">
         <div class="room-table-header">
